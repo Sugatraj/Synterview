@@ -20,43 +20,49 @@ import Image from "next/image";
 import Link from "next/link";
 import { toast } from "sonner";
 
+import FormFiled from "@/components/FormField";
+import { useRouter } from "next/navigation";
+
 // const formSchema = z.object({
 //   username: z.string().min(2).max(50),
 // });
 
 const authFormSchema = (type: FormType) => {
-
   return z.object({
     name: type === "sign-up" ? z.string().min(3) : z.string().optional(),
     email: z.string().email(),
-    password :z.string().min(3)
+    password: z.string().min(3),
   });
 };
 
 const AuthForm = ({ type }: { type: FormType }) => {
-
-  const formSchema = authFormSchema(type)
+  const router = useRouter;
+  const formSchema = authFormSchema(type);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       email: "",
-      password: ""
+      password: "",
     },
   });
 
   const isSignIn = type === "sign-in";
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    try{
-      if (type === "sign-up"){
-        console.log("SIGN UP", values)
+    try {
+      if (type === "sign-up") {
+        console.log("SIGN UP", values);
+        toast.success("Account created successfully. Please sign in.")
+        router.push("/sign-in")
       } else {
-        console.log("SIGN IN", values)
+        console.log("SIGN IN", values);
+        toast.success("Sign in successfully.")
+        router.push('/')
       }
-    }catch(e){
-      console.error(e)
-      toast.error(`there was an error ${e}`)
+    } catch (e) {
+      console.error(e);
+      toast.error(`there was an error ${e}`);
     }
   };
 
@@ -74,9 +80,30 @@ const AuthForm = ({ type }: { type: FormType }) => {
             onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-8 w-full space-y-6 mt-4 form"
           >
-            {!isSignIn && <p>Name</p>}
-            <p>Email</p>
-            <p>Password</p>
+            {!isSignIn && (
+              <FormFiled
+                control={form.control}
+                name="name"
+                label="Name"
+                placeholder="Your Name"
+              />
+            )}
+
+            <FormFiled
+                control={form.control}
+                name="email"
+                label="Email"
+                placeholder="Your Email address"
+                type="email"
+              />
+            
+            <FormFiled
+                control={form.control}
+                name="passworf"
+                label="Password"
+                placeholder="Enter your password"
+                type="password"
+              />
             <Button className="btn " type="submit">
               {isSignIn ? "Sign in" : "Create an Account"}
             </Button>
