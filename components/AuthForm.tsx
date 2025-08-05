@@ -78,7 +78,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-8 w-full space-y-6 mt-4 form"
+            className="space-y-8 w-full mt-4 form"
           >
             {!isSignIn && (
               <FormFiled
