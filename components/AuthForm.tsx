@@ -99,7 +99,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
             
             <FormFiled
                 control={form.control}
-                name="passworf"
+                name="password"
                 label="Password"
                 placeholder="Enter your password"
                 type="password"

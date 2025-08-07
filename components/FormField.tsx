@@ -17,7 +17,9 @@ interface FormFieldProps<T extends FieldValues> {
     type? :'text' | 'email' | 'password' | 'file'
 }
 
-const FormField = ({name, control, label, placeholder, type="text"}:FormFieldProps<T>) => (
+const FormField = <T extends FieldValues> ({
+  name, control, label, placeholder, type = 'text'
+} : FormFieldProps<T>): JSX.Element =>{
   <Controller
     name={name}
     control={control}
@@ -31,7 +33,8 @@ const FormField = ({name, control, label, placeholder, type="text"}:FormFieldPro
         <FormMessage />
       </FormItem>
     )}
-  />
+    />
+  }
 );
 
 export default FormField;
